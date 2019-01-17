@@ -39,4 +39,4 @@ script:
 
 after_success:
   - $PIP install twine
-  - $PYTHON -m twine upload dist/*.whl --skip-existing
+  - $PYTHON -m twine upload dist/*.whl
