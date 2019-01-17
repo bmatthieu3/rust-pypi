@@ -1,0 +1,12 @@
+[package]
+name = "rust-pypi"
+version = "1.4.0"
+authors = ["Matthieu Baumann <matthieu.baumann@astro.unistra.fr>"]
+edition = "2018"
+
+[build-system]
+requires = ["setuptools", "wheel", "setuptools-rust"]
+
+[lib]
+name = "rust_pypi"
+crate-type = ["cdylib"]
