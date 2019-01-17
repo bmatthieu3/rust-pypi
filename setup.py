@@ -3,10 +3,10 @@ from setuptools_rust import Binding, RustExtension
 
 setup(
     name="rust-pypi",
-    version="1.5.0",
-    rust_extensions=[RustExtension("rust_pypi.rust_pypi", 'Cargo.toml', binding=Binding.NoBinding)],
+    version="1.6.0",
+    rust_extensions=[RustExtension("rust_pypi", "Cargo.toml", binding=Binding.NoBinding)],
     packages=["rust_pypi"],
-    requires=[
+    install_requires=[
         # CFFI is used for loading the dynamic lib compiled with cargo
         'cffi',
     ],
