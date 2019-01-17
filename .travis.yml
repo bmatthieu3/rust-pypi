@@ -27,13 +27,10 @@ matrix:
         - PIP=pip2
         - PYTHON=python2
 
-global:
-  env:
-    - CIBW_BEFORE_BUILD="pip install setuptools-rust && source ~/install_cargo.sh"
-    - CIBW_ENVIRONMENT='PATH="~/.cargo/bin:$PATH"'
-
 script:
   - $PIP install cibuildwheel==0.10.0 setuptools-rust
+  - export CIBW_BEFORE_BUILD="pip install setuptools-rust && source ~/install_cargo.sh"
+  - export CIBW_ENVIRONMENT='PATH="~/.cargo/bin:$PATH"'
   - cibuildwheel --output-dir dist
 
 after_success:
