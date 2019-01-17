@@ -33,7 +33,7 @@ global:
     - CIBW_ENVIRONMENT='PATH="~/.cargo/bin:$PATH"'
 
 script:
-  - $PIP install cibuildwheel==0.10.0
+  - $PIP install cibuildwheel==0.10.0 setuptools-rust
   - cibuildwheel --output-dir dist
 
 after_success:
