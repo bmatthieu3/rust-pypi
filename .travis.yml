@@ -1,0 +1,41 @@
+# Building wheels for Linux and MacOS platforms
+language: python
+
+matrix:
+  include:
+    # Job generating the wheels for Linux 32bit platforms
+    - sudo: required
+      env:
+        - CIBW_SKIP=*manylinux1_i686*
+        - PIP=pip
+        - PYTHON=python
+      services:
+        # We use docker for generating the wheels for Linux.
+        - docker
+    # Job generating the wheels for Linux 64bit platforms
+    - sudo: required
+      env:
+        - CIBW_SKIP=*manylinux1_x86_64*
+        - PIP=pip
+        - PYTHON=python
+      services:
+        # We use docker for generating the wheels for Linux.
+        - docker
+    - os: osx
+      language: generic
+      env:
+        - PIP=pip2
+        - PYTHON=python2
+
+global:
+  env:
+    - CIBW_BEFORE_BUILD="pip install setuptools-rust && source ~/install_cargo.sh"
+    - CIBW_ENVIRONMENT='PATH="~/.cargo/bin:$PATH"'
+
+script:
+  - $PIP install cibuildwheel==0.10.0
+  - cibuildwheel --output-dir dist
+
+after_success:
+  - $PIP install twine
+  - $PYTHON -m twine upload dist/*.whl --skip-existing
