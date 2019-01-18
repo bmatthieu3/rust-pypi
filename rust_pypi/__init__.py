@@ -13,14 +13,20 @@ def find_dynamic_lib_file():
 
     system = platform.system()
 
-    if system == 'Windows':
-        path = os.path.join(os.path.dirname(__file__), "rust_pypi*.dll")
-    elif system == 'Darwin':
-        path = os.path.join(os.path.dirname(__file__), "rust_pypi*.dylib")
-    else:
-        path = os.path.join(os.path.dirname(__file__), "rust_pypi*.so")
+    dyn_lib_name = "rust_pypi*.so"
 
-    filename = glob(path)[0]
+    if system == 'Windows':
+        dyn_lib_name = "rust_pypi*.dll"
+    elif system == 'Darwin':
+        dyn_lib_name = "rust_pypi*.dylib"
+
+    try:
+        path = os.path.join(os.path.dirname(__file__), dyn_lib_name)
+        filename = glob(path)[0]
+    except IndexError as e:
+        print(e)
+        print("Cannot find the dynamic lib located at: ", path)
+
     return filename
 
 C = ffi.dlopen(find_dynamic_lib_file())
