@@ -27,8 +27,7 @@ build_script:
   # Run some tests
   - python -m pip install pytest cffi
   - python setup.py build_rust
-  - dir /s
-  - xcopy "build\\*.pyd" rust_pypi /sy
+  - xcopy "build\lib\rust_pypi\\*.pyd" rust_pypi /sy
   - python -m pytest -v rust_pypi
   # Upload to PyPI if the tests succed
   - python -m pip install twine
