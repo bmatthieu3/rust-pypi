@@ -5,7 +5,7 @@ environment:
     # Nightly 64-bit MSVC
     - channel: nightly
       target: x86_64-pc-windows-msvc
-      CIBW_SKIP: "*win32* cp33-*"
+      CIBW_SKIP: "*win32* cp33-* cp34-* cp35-* cp36-* cp37-*"
       CIBW_BEFORE_BUILD: pip install setuptools-rust
     # Nightly 32-bit MSVC
     - channel: nightly
@@ -27,7 +27,7 @@ build_script:
   # Run some tests
   - python -m pip install pytest cffi
   - ps: |
-      if ($env:Platform -Match "x64") {
+      if ($env:Platform -Match "x86_64") {
         Write-Host "This is Windows 64 bits"
         call "%VS140COMNTOOLS%\VsDevCmd.bat"
         set VS90COMNTOOLS=%VS140COMNTOOLS%
