@@ -1,5 +1,10 @@
 environment:
-  TWINE_USERNAME: bmatthieu3
+  global:
+    # SDK v7.0 MSVC Express 2008's SetEnv.cmd script will fail if the
+    # /E:ON and /V:ON options are not enabled in the batch script intepreter
+    # See: http://stackoverflow.com/a/13751649/163740
+    CMD_IN_ENV: "cmd /E:ON /V:ON /C .\\appveyor\\run_with_env.cmd"
+    TWINE_USERNAME: bmatthieu3
   # Note: TWINE_PASSWORD is set in Appveyor settings
   matrix:
     # Nightly 64-bit MSVC
@@ -20,29 +25,29 @@ install:
   - set PATH=%PATH%;%USERPROFILE%\.cargo\bin
   - rustc -vV
   - cargo -vV
-  - pip install cibuildwheel==0.9.1 setuptools_rust
+  - "%CMD_IN_ENV% pip install cibuildwheel==0.9.1 setuptools_rust"
 
 build_script:
   - cibuildwheel --output-dir dist
   # Run some tests
-  - python -m pip install pytest cffi
+  - "%CMD_IN_ENV% python -m pip install pytest cffi"
   - ps: |
       Write-Host "$env:Platform"
       Write-Host $env:Platform
   - ps: |
-      if ($env:Platform -Match "x86_64") {
+      if ($env:Platform -Match "x86") {
         Write-Host "This is Windows 64 bits"
         call "%VS140COMNTOOLS%\VsDevCmd.bat"
         set VS90COMNTOOLS=%VS140COMNTOOLS%
       } else {
         Write-Host "This is Windows 32 bits"
       }
-  - python setup.py build_rust
+  - "%CMD_IN_ENV% python setup.py build_rust"
   - xcopy "build\lib\rust_pypi\*.pyd" rust_pypi /sy
-  - python -m pytest -v rust_pypi
+  - "%CMD_IN_ENV% python -m pytest -v rust_pypi"
   # Upload to PyPI if the tests succeed
-  - python -m pip install twine
-  - python -m twine upload "dist\\*.whl" --skip-existing
+  - "%CMD_IN_ENV% python -m pip install twine"
+  - "%CMD_IN_ENV% python -m twine upload "dist\\*.whl" --skip-existing"
 
 artifacts:
   - path: "dist\\*.whl"
