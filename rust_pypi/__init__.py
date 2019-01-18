@@ -1,4 +1,5 @@
 import os
+import sys
 from cffi import FFI
 
 ffi = FFI()
@@ -13,23 +14,27 @@ def find_dynamic_lib_file():
 
     system = platform.system()
 
+    # For Linux and Darwin platforms, the generated lib file extension is .so
     dyn_lib_name = "rust_pypi*.so"
 
     if system == 'Windows':
+        # On windows, it is a dll extension file
         dyn_lib_name = "rust_pypi*.dll"
-    elif system == 'Darwin':
-        dyn_lib_name = "rust_pypi*.dylib"
+
+    path = os.path.join(os.path.dirname(__file__), dyn_lib_name)
+    filename = ""
 
     try:
-        path = os.path.join(os.path.dirname(__file__), dyn_lib_name)
         filename = glob(path)[0]
     except IndexError as e:
-        print(e)
-        print("Cannot find the dynamic lib located at: ", path)
+        print("Cannot find the dynamic lib located in: ", os.path.dirname(__file__))
+        # Raising the exception to get the traceback
+        raise
 
     return filename
 
-C = ffi.dlopen(find_dynamic_lib_file())
+dyn_lib_path = find_dynamic_lib_file()
+C = ffi.dlopen(dyn_lib_path)
 
 from .double import square, triple
 from .version import __version__
