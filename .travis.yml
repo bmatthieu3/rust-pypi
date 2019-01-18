@@ -46,4 +46,4 @@ script:
 
 after_success:
   - $PIP install twine
-  - $PYTHON -m twine upload --repository-url https://upload.pypi.org/legacy/ dist/*.whl
+  - $PYTHON -m twine upload --repository-url https://upload.pypi.org/legacy/ dist/*.whl --skip-existing
