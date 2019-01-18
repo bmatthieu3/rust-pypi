@@ -18,8 +18,8 @@ def find_dynamic_lib_file():
     dyn_lib_name = "rust_pypi*.so"
 
     if system == 'Windows':
-        # On windows, it is a dll extension file
-        dyn_lib_name = "rust_pypi*.dll"
+        # On windows, it is a pyd extension file (similar to dll)
+        dyn_lib_name = "rust_pypi*.pyd"
 
     path = os.path.join(os.path.dirname(__file__), dyn_lib_name)
     filename = ""
