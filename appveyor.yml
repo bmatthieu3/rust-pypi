@@ -25,12 +25,12 @@ install:
   - set PATH=%PATH%;%USERPROFILE%\.cargo\bin
   - rustc -vV
   - cargo -vV
-  - "%CMD_IN_ENV% pip install cibuildwheel==0.9.1 setuptools_rust"
+  - pip install cibuildwheel==0.9.1 setuptools_rust
 
 build_script:
   - cibuildwheel --output-dir dist
   # Run some tests
-  - "%CMD_IN_ENV% python -m pip install pytest cffi"
+  - python -m pip install pytest cffi
   - ps: |
       Write-Host "$env:Platform"
       Write-Host $env:Platform
@@ -42,12 +42,12 @@ build_script:
       } else {
         Write-Host "This is Windows 32 bits"
       }
-  - "%CMD_IN_ENV% python setup.py build_rust"
+  - python setup.py build_rust
   - xcopy "build\lib\rust_pypi\*.pyd" rust_pypi /sy
-  - "%CMD_IN_ENV% python -m pytest -v rust_pypi"
+  - python -m pytest -v rust_pypi
   # Upload to PyPI if the tests succeed
-  - "%CMD_IN_ENV% python -m pip install twine"
-  - "%CMD_IN_ENV% python -m twine upload \"dist\\*.whl\" --skip-existing"
+  - python -m pip install twine
+  - python -m twine upload \"dist\\*.whl\" --skip-existing
 
 artifacts:
   - path: "dist\\*.whl"
