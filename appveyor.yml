@@ -24,11 +24,13 @@ install:
 
 build_script:
   - cibuildwheel --output-dir dist
+  # Run some tests
+  - python -m pip install pytest cffi
+  - python -m pytest -v rust_pypi
+  # Upload to PyPI if the tests succed
   - python -m pip install twine
   - python -m twine upload "dist\\*.whl"
-  # Run some tests
-  - python -m pip install pytest
-  - python -m pytest -v rust_pypi
+
 
 artifacts:
   - path: "dist\\*.whl"
