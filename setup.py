@@ -9,6 +9,7 @@ setup(
     install_requires=[
         # CFFI is used for loading the dynamic lib compiled with cargo
         'cffi',
+        'setuptools_rust',
     ],
     # rust extensions are not zip safe, just like C-extensions.
     zip_safe=False,

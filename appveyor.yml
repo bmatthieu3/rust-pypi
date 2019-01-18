@@ -47,7 +47,7 @@ build_script:
   - "%CMD_IN_ENV% python -m pytest -v rust_pypi"
   # Upload to PyPI if the tests succeed
   - "%CMD_IN_ENV% python -m pip install twine"
-  - "%CMD_IN_ENV% python -m twine upload "dist\\*.whl" --skip-existing"
+  - "%CMD_IN_ENV% python -m twine upload \"dist\\*.whl\" --skip-existing"
 
 artifacts:
   - path: "dist\\*.whl"
