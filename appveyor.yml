@@ -34,9 +34,9 @@ install:
   - pip install cibuildwheel==0.9.1 setuptools_rust
 
 build_script:
+  - set PATH=%PYTHON%;%PATH%
   - cibuildwheel --output-dir dist
   # Run some tests
-  - set PATH=%PYTHON%;%PATH%
   - python -m pip install pytest cffi
   - python setup.py build_rust
   - xcopy "build\lib\rust_pypi\*.pyd" rust_pypi /sy
