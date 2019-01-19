@@ -80,6 +80,9 @@ install:
   - cargo -vV
   - pip install cibuildwheel==0.9.1 setuptools_rust
 
+build_script:
+  - cibuildwheel --output-dir dist
+
 before_test:
   # Set the path so that the good python version is chosen
   - set PATH=%PYTHON%;%PATH%
@@ -94,9 +97,11 @@ before_test:
 test_script:
   - python -m pytest -v rust_pypi
 
-deploy:
-  # Upload to PyPI if the tests succeed
+before_deploy:
   - python -m pip install twine
+
+after_deploy:
+  # Upload to PyPI if the tests succeed
   - python -m twine upload "dist\\*.whl" --skip-existing
 
 artifacts:
